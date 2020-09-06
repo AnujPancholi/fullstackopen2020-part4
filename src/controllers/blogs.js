@@ -4,15 +4,15 @@ const blogRouter = require('express').Router();
 const BlogModel = require('../models/blogs.js');
 
 
-app.get('/', (request, response) => {
-    BlogModel
+blogRouter.get('/', (request, response) => {
+  BlogModel
     .find({})
     .then(blogs => {
       response.json(blogs)
     })
 })
 
-app.post('/', (request, response) => {
+blogRouter.post('/', (request, response) => {
   const blog = new BlogModel(request.body)
   blog
     .save()

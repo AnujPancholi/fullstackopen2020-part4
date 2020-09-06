@@ -7,9 +7,9 @@ const Mongoose = require('mongoose');
 
 //db connection
 Mongoose.connect(CONFIG.DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
 })
 
 //logger
@@ -31,5 +31,5 @@ app.use('/api/blogs',blogRouter);
 
 
 app.listen(CONFIG.PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${CONFIG.PORT}`);
 })
