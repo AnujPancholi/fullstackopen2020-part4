@@ -1,8 +1,21 @@
+"use strict";
+
+require("dotenv").config();
+const mongoose = require('mongoose')
+
+const mongoUrl = 'mongodb://localhost/bloglist'
+mongoose.connect(mongoUrl, { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+})
+
+const logger = require('./utils/logger.js');
 const http = require('http')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
+
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -13,8 +26,7 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+
 
 app.use(cors())
 app.use(express.json())
