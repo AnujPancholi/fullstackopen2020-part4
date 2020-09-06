@@ -5,15 +5,19 @@ require("dotenv").config();
 const CONFIG = require('./utils/config.js');
 const Mongoose = require('mongoose');
 
+//logger
+const logger = require('./utils/logger.js');
+
 //db connection
 Mongoose.connect(CONFIG.DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
+}).catch(error => {
+  logger.error(`FATAL: DB CONNECTION ERROR: ${error}`);
+  process.exit(1);
 })
 
-//logger
-const logger = require('./utils/logger.js');
 
 //express and related dependencies
 const express = require('express');
