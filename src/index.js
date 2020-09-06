@@ -1,19 +1,20 @@
 "use strict";
 
 require("dotenv").config();
-const mongoose = require('mongoose')
+const CONFIG = require('./utils/config.js');
+const mongoose = require('mongoose');
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-mongoose.connect(mongoUrl, { 
+
+mongoose.connect(CONFIG.DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
 })
 
 const logger = require('./utils/logger.js');
-const express = require('express')
-const app = express()
-const cors = require('cors')
+const express = require('express');
+const app = express();
+const cors = require('cors');
 
 
 const blogSchema = new mongoose.Schema({
@@ -48,7 +49,7 @@ app.post('/api/blogs', (request, response) => {
     })
 })
 
-const PORT = 3003
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
