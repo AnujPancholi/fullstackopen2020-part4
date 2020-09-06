@@ -7,7 +7,24 @@
 
 Copied the code as given in the exercise, structured it, installed the necessary packages, dev dependencies, etc. and got it working. Tested the one POST and one GET endpoint with Postman. It is connected to the same Atlas cluster as userd in the last part but to a different database.
 
-**NOTE:** When the exercise said "Turn the application into a functioning npm project", I assumed that I would have to structure it along the lines of what was shown in the course. Only later did I realize that structuring it was part of the second exercise. So I have inadvertanly completed 4.1 already.
+**NOTE:** When the exercise said "Turn the application into a functioning npm project", I assumed that I would have to structure it along the lines of what was shown in the course. Only later did I realize that structuring it was part of the second exercise. So I have inadvertenly completed 4.1 already.
+
+## Exercise 4.2
+
+I had inadvertently completed this in exercise 4.1, however, I have made some pretty significant changes to the request handlers of both the endpoints which I think requires some explaination.
+
+Firstly, I switched it to async await. also, I learnt in Part 3 of the course that you could shift the error handling directly to a middleware. This got me thinking - any request would either do what it is supposed to successfully, or it will encounter some error, and in either case, it must respond. So, why not shift the entire responsibility of processing the result and resopnding accordingly to a middleware, be it some success result or an error result?
+
+So, I initialize a `resultObj` at the beginning of each request handler, with 4 properties:
+
+ - `success`: a flag denoting success or failure of a request's intended behaviour
+ - `error`: an object containing the error response, `null` if no error
+ - `data`: an object containing the data to be sent in response (response body), `null` in case of error
+ - `resCode`: the http status code to be used in the response
+
+Other than this, the code itself should explain how it works. I know there can be holes and pitfalls with this approach, but I came up with it on the fly for the purpose of this exercise.
+
+Apart from this, I have separated the `models` and `controllers` as per the MVC approach that this course is taking, set up a `dev` script which I ran to test this with Postman, and added a `lint` script as well using eslint. 
 
 
 ---
