@@ -86,7 +86,7 @@ const requestProcessingResultHandler = (resultObj,req,res,next) => {
   if(resultObj.success){
     res.status(resultObj.resCode).send(resultObj.data);
   } else {
-    logger.error(`blog|ERROR|${e}`);
+    logger.error(`blog|ERROR|${resultObj.error}`);
     res.status(resultObj.resCode).send(resultObj.error);
   }
 }
