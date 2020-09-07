@@ -28,5 +28,13 @@ Apart from this, I have separated the `models` and `controllers` as per the MVC 
 
 **NOTE:** The course mentions "baby steps", each of which should be commits. If you wish to see these, there are about 10 or so commits before the actual submission commit, not all of them stable, which capture these. Will try to keep each commit stable from now on.
 
+## Exercise 4.3
+
+Added jest as a dev dependency, configured in `package.json` and `.eslintrc.js`, then added a directory `tests` in src. Then added the file `list_helper.js` in `utils`, added a function `dummy`, imported the same in the file `list_helpers.test.js` in the `tests` directory. Wrote a test in a `describe` block, and ran the same, via an npm test script, and it passed:
+
+![TEST_1.png](supporting_screenshots/TEST_1.png)
+
+**NOTE:** The code isn't exactly the same as that in the course but it behaves in the same manner.
+
 
 ---
