@@ -22,7 +22,6 @@ blogRouter.get('/', (request, response, next) => {
       resultObj.resCode = 200;
 
     }catch(e){
-      logger.error(`blog|GET|ERROR|${e}`);
       resultObj.success = false;
       resultObj.error = {
         message: e.message || "INTERNAL SERVER ERROR"
@@ -87,6 +86,7 @@ const requestProcessingResultHandler = (resultObj,req,res,next) => {
   if(resultObj.success){
     res.status(resultObj.resCode).send(resultObj.data);
   } else {
+    logger.error(`blog|ERROR|${e}`);
     res.status(resultObj.resCode).send(resultObj.error);
   }
 }
