@@ -330,3 +330,62 @@ describe("Tests for mostBlogs helper function",() => {
     })
   })
 })
+
+
+
+describe("Tests for mostLikes helper function",() => {
+
+  const TEST_CASES = [{
+    description: "mostLikes should return Author 1 with likes 0 because Author 2 will not replace it",
+    params: [
+      TEST_BLOG_LISTS[0]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Author 1",
+        "likes": 0
+      });
+    }
+  },{
+    description: "mostLikes should return the only author",
+    params: [
+      TEST_BLOG_LISTS[1]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Random Author",
+        "likes": 1
+      });
+    }
+  },{
+    description: "mostLikes should return the clear winner Author 1",
+    params: [
+      TEST_BLOG_LISTS[2]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Author 1",
+        "likes": 8721
+      });
+    }
+  },
+  {
+    description: "mostLikes should return Author 3",
+    params: [
+      TEST_BLOG_LISTS[4]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Author 3",
+        "likes": 8698
+      });
+    }
+  }
+  ]
+    
+  TEST_CASES.forEach((testCase) => {
+    test(testCase.description,() => {
+      testCase.assert(listHelpers.mostLikes);
+    })
+  })
+})
