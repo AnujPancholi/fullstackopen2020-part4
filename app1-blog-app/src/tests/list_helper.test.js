@@ -14,14 +14,14 @@ const TEST_BLOG_LISTS = [
                 
     {
       "title": "Mock Blog Title",
-      "author": "Random Author",
+      "author": "Author 1",
       "url": "https://www.mockblog.com/123456",
       "likes": 0,
       "id": "5f54c79917c0c7d1c608fca1"
     },
     {
       "title": "Mock Blog Title 2",
-      "author": "Random Author",
+      "author": "Author 2",
       "url": "https://www.mockblog.com/1234567",
       "likes": 0,
       "id": "5f54c9ed55a4c0d3ba73b10a"
@@ -41,35 +41,35 @@ const TEST_BLOG_LISTS = [
                 
     {
       "title": "Mock Blog Title",
-      "author": "Random Author",
+      "author": "Author 1",
       "url": "https://www.mockblog.com/123456",
       "likes": 23,
       "id": "5f54c79917c0c7d1c608fca1"
     },
     {
       "title": "Mock Blog Title 2",
-      "author": "Random Author",
+      "author": "Author 2",
       "url": "https://www.mockblog.com/1234567",
       "likes": 544,
       "id": "5f54c9ed55a4c0d3ba73b10a"
     },
     {
       "title": "Mock Blog Title 3",
-      "author": "Random Author",
+      "author": "Author 1",
       "url": "https://www.mockblog.com/1234567",
       "likes": 8698,
       "id": "5f54c9ed55a4c0d3ba73b10a"
     },
     {
       "title": "Mock Blog Title 4",
-      "author": "Random Author",
+      "author": "Author 1",
       "url": "https://www.mockblog.com/1234567",
       "likes": 0,
       "id": "5f54c9ed55a4c0d3ba73b10a"
     },
     {
       "title": "Mock Blog Title 5",
-      "author": "Random Author",
+      "author": "Author 2",
       "url": "https://www.mockblog.com/1234567",
       "likes": 2,
       "id": "5f54c9ed55a4c0d3ba73b10a"
@@ -109,6 +109,45 @@ const TEST_BLOG_LISTS = [
     {
       "title": "Mock Blog Title 5",
       "author": "Random Author",
+      "url": "https://www.mockblog.com/1234567",
+      "likes": 2,
+      "id": "5f54c9ed55a4c0d3ba73b10a"
+    }
+              
+  ],
+  [
+              
+    {
+      "title": "Mock Blog Title",
+      "author": "Author 1",
+      "url": "https://www.mockblog.com/123456",
+      "likes": 23,
+      "id": "5f54c79917c0c7d1c608fca1"
+    },
+    {
+      "title": "Mock Blog Title 2",
+      "author": "Author 2",
+      "url": "https://www.mockblog.com/1234567",
+      "likes": 42,
+      "id": "5f54c9ed55a4c0d3ba73b10a"
+    },
+    {
+      "title": "Mock Blog Title 3",
+      "author": "Author 3",
+      "url": "https://www.mockblog.com/1234567",
+      "likes": 8698,
+      "id": "5f54c9ed55a4c0d3ba73b10a"
+    },
+    {
+      "title": "Mock Blog Title 3",
+      "author": "Author 3",
+      "url": "https://www.mockblog.com/1234567",
+      "likes": 0,
+      "id": "5f54c9ed55a4c0d3ba73b10a"
+    },
+    {
+      "title": "Mock Blog Title 5",
+      "author": "Author 1",
       "url": "https://www.mockblog.com/1234567",
       "likes": 2,
       "id": "5f54c9ed55a4c0d3ba73b10a"
@@ -173,7 +212,7 @@ describe("Tests for favoriteBlog helper function",() => {
     assert: function(targetFunction){
       expect(targetFunction(...this.params)).toEqual({
         "title": "Mock Blog Title",
-        "author": "Random Author",
+        "author": "Author 1",
         "url": "https://www.mockblog.com/123456",
         "likes": 0,
         "id": "5f54c79917c0c7d1c608fca1"
@@ -201,7 +240,7 @@ describe("Tests for favoriteBlog helper function",() => {
     assert: function(targetFunction){
       expect(targetFunction(...this.params)).toEqual({
         "title": "Mock Blog Title 3",
-        "author": "Random Author",
+        "author": "Author 1",
         "url": "https://www.mockblog.com/1234567",
         "likes": 8698,
         "id": "5f54c9ed55a4c0d3ba73b10a"
@@ -228,6 +267,66 @@ describe("Tests for favoriteBlog helper function",() => {
   TEST_CASES.forEach((testCase) => {
     test(testCase.description,() => {
       testCase.assert(listHelpers.favoriteBlog);
+    })
+  })
+})
+
+
+
+
+describe("Tests for mostBlogs helper function",() => {
+
+  const TEST_CASES = [{
+    description: "mostBlogs should return Author 1 with count 1 because Author 2 will not replace it",
+    params: [
+      TEST_BLOG_LISTS[0]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Author 1",
+        "count": 1
+      });
+    }
+  },{
+    description: "mostBlogs should return the only author",
+    params: [
+      TEST_BLOG_LISTS[1]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Random Author",
+        "count": 1
+      });
+    }
+  },{
+    description: "mostBlogs should return the clear winner Author 1",
+    params: [
+      TEST_BLOG_LISTS[2]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Author 1",
+        "count": 3
+      });
+    }
+  },
+  {
+    description: "mostBlogs should return Author 3 because Author 1 will not replace it",
+    params: [
+      TEST_BLOG_LISTS[4]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "author": "Author 3",
+        "count": 2
+      });
+    }
+  }
+  ]
+    
+  TEST_CASES.forEach((testCase) => {
+    test(testCase.description,() => {
+      testCase.assert(listHelpers.mostBlogs);
     })
   })
 })
