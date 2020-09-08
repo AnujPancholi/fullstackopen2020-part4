@@ -71,4 +71,8 @@ To achieve this, I separated the lists as a global array of arrays and used the 
 I could've used lodash but decided not to, did it myself using a `Map` and a reduce function. For the tests, I had to change the names of the mock authors, so, made those changes (had to make the changes in the previous test as well due to this, but only in the data). All tests pass.
 
 
+## Exercise 4.7
+
+Used an almost identical function as the last one to calculate most likes, with some subtle differences, of course. Wrote tests for the same, and in the last few exercises is where I think the reusability of the tests really shines.
+
 ---
