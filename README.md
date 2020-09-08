@@ -57,6 +57,13 @@ I defined the test cases as an array of objects, where each object would represe
   - A test for anything has two essential parts - *how* something is tested and *what* it is tested with. Each test case represents *what* it's tested with, which changes from test case to test case, and the test block itself represents *how* it's tested, which remains constant for all test cases. This can make for better testing because we are testing a function with several different test cases in the *same manner*, without writing the test block repeatedly. **Note:** Of course how each `assert` function is implemented represents the *how* as well, and I did this becasue some test cases need to be asserted differently (`toBeClose`, `not.toBe`, etc), but is still makes for better separation of the *what* and the *how*.
    
 
+## Exercise 4.5
+
+Wrote another one-liner reduce to get the entire object with the most likes, and wrote a `describe` block to test it.
+
+There are a few changes that I've made, those being that I wanted to run the tests on the same lists of blogposts which formed the test cases of the `totalLikes` function, and I wanted to do this in a way that I could define the mock test lists once and use them in both the `describe` blocks (again, DRY principle).
+
+To achieve this, I separated the lists as a global array of arrays and used the same by explicitly specifying which array of blogs I want to use for a certain test, for both the describe blocks. This might help me in the exercises to come. 
   
 
 
