@@ -9,10 +9,10 @@ describe("Tests for dummy helper function",() => {
 })
 
 
-describe("Tests for getTotalLikes helper function",() => {
+describe("Tests for totalLikes helper function",() => {
 
   const TEST_CASES = [{
-    description: "getTotalLikes should return 0",
+    description: "totalLikes should return 0",
     params: [
       [
                 
@@ -37,7 +37,7 @@ describe("Tests for getTotalLikes helper function",() => {
       expect(targetFunction(...this.params)).toBe(0);
     }
   },{
-    description: "getTotalLikes should return 1",
+    description: "totalLikes should return 1",
     params: [
       [{
         "title": "Mock Blog Title",
@@ -50,11 +50,103 @@ describe("Tests for getTotalLikes helper function",() => {
     assert: function(targetFunction){
       expect(targetFunction(...this.params)).toBe(1);
     }
+  },{
+    description: "totalLikes should return sum of several blogpost likes",
+    params: [
+      [
+                
+        {
+          "title": "Mock Blog Title",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/123456",
+          "likes": 23,
+          "id": "5f54c79917c0c7d1c608fca1"
+        },
+        {
+          "title": "Mock Blog Title 2",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+          "likes": 544,
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        },
+        {
+          "title": "Mock Blog Title 3",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+          "likes": 8698,
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        },
+        {
+          "title": "Mock Blog Title 4",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+          "likes": 0,
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        },
+        {
+          "title": "Mock Blog Title 5",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+          "likes": 2,
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        }
+                
+      ]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toBe(9267);
+    }
+  },{
+    description: "totalLikes should return sum of several blogpost likes",
+    params: [
+      [
+                
+        {
+          "title": "Mock Blog Title",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/123456",
+          "likes": 23,
+          "id": "5f54c79917c0c7d1c608fca1"
+        },
+        {
+          "title": "Mock Blog Title 2",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        },
+        {
+          "title": "Mock Blog Title 3",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+          "likes": 8698,
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        },
+        {
+          "title": "Mock Blog Title 3",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+          "likes": 0,
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        },
+        {
+          "title": "Mock Blog Title 5",
+          "author": "Random Author",
+          "url": "https://www.mockblog.com/1234567",
+          "likes": 2,
+          "id": "5f54c9ed55a4c0d3ba73b10a"
+        }
+                
+      ]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toBe(NaN);
+    }
   }]
     
   TEST_CASES.forEach((testCase) => {
     test(testCase.description,() => {
-      testCase.assert(listHelpers.getTotalLikes);
+      testCase.assert(listHelpers.totalLikes);
     })
   })
 })
