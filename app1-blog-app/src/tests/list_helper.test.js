@@ -161,3 +161,73 @@ describe("Tests for totalLikes helper function",() => {
     })
   })
 })
+
+
+describe("Tests for favoriteBlog helper function",() => {
+
+  const TEST_CASES = [{
+    description: "favoriteBlog should return 5f54c79917c0c7d1c608fca1",
+    params: [
+      TEST_BLOG_LISTS[0]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "title": "Mock Blog Title",
+        "author": "Random Author",
+        "url": "https://www.mockblog.com/123456",
+        "likes": 0,
+        "id": "5f54c79917c0c7d1c608fca1"
+      });
+    }
+  },{
+    description: "favoriteBlog should return 5f54c79917c0c7d1c608fca1 2",
+    params: [
+      TEST_BLOG_LISTS[1]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "title": "Mock Blog Title",
+        "author": "Random Author",
+        "url": "https://www.mockblog.com/123456",
+        "likes": 1,
+        "id": "5f54c79917c0c7d1c608fca1"
+      });
+    }
+  },{
+    description: "favoriteBlog should return 5f54c9ed55a4c0d3ba73b10a",
+    params: [
+      TEST_BLOG_LISTS[2]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "title": "Mock Blog Title 3",
+        "author": "Random Author",
+        "url": "https://www.mockblog.com/1234567",
+        "likes": 8698,
+        "id": "5f54c9ed55a4c0d3ba73b10a"
+      });
+    }
+  },
+  {
+    description: "favoriteBlog should return 5f54c9ed55a4c0d3ba73b10a 2",
+    params: [
+      TEST_BLOG_LISTS[3]
+    ],
+    assert: function(targetFunction){
+      expect(targetFunction(...this.params)).toEqual({
+        "title": "Mock Blog Title 3",
+        "author": "Random Author",
+        "url": "https://www.mockblog.com/1234567",
+        "likes": 8698,
+        "id": "5f54c9ed55a4c0d3ba73b10a"
+      });
+    }
+  }
+  ]
+    
+  TEST_CASES.forEach((testCase) => {
+    test(testCase.description,() => {
+      testCase.assert(listHelpers.favoriteBlog);
+    })
+  })
+})
