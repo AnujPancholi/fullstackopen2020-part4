@@ -36,5 +36,28 @@ Added jest as a dev dependency, configured in `package.json` and `.eslintrc.js`,
 
 **NOTE:** The code isn't exactly the same as that in the course but it behaves in the same manner.
 
+## Exercise 4.4
+
+Wrote a simple totalLikes function that calculates the total likes with a simple reduce. Then made some mock arrays of json to test said function, hardcoded into the test.
+
+My approach for writing the actual test, instead of explicitly writing the test case for each array of json, I thought of somehow putting all the test cases in an array and then calling the `test` (which it seems is essentially a function) block for each of the test cases (DRY principle). So, I came up with a way of defining a test case such that all the things needed to run the test case, excluding the function to be tested itself, are contained in the test case.
+
+I defined the test cases as an array of objects, where each object would represent a test case, and would have the following properties:
+
+ - `description`: The description or test name that is associated with the test.
+ - `params`: An array of the exact parameters that have to pe passed to the function. The params can be defined as an array becasue the array can just be spread using the spread operator and can be passed to any function we please.
+ - `assert`: A function that takes the function to be tested as a parameter, and performs the assertion on it with the same `params` mentioned in the test case object.
+
+ With the test cases designed in this format, I could just iterate over the test cases and devfine a `test` block for each.
+
+ Few of the advantages of this approach that I can think of:
+
+  - Each `test` block need not be defined individually.
+  - Since the `assert` function takes the function to be tested ("target" function) as a parameter, we can change out the function if whenever we want without changing the test cases. In fact, we can have two competing functions that do the same thing and test them both with the same test cases. This makes for better reusablilty.
+  - A test for anything has two essential parts - *how* something is tested and *what* it is tested with. Each test case represents *what* it's tested with, which changes from test case to test case, and the test block itself represents *how* it's tested, which remains constant for all test cases. This can make for better testing because we are testing a function with several different test cases in the *same manner*, without writing the test block repeatedly. **Note:** Of course how each `assert` function is implemented represents the *how* as well, and I did this becasue some test cases need to be asserted differently (`toBeClose`, `not.toBe`, etc), but is still makes for better separation of the *what* and the *how*.
+   
+
+  
+
 
 ---
