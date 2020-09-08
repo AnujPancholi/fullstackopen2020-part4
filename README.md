@@ -64,7 +64,11 @@ Wrote another one-liner reduce to get the entire object with the most likes, and
 There are a few changes that I've made, those being that I wanted to run the tests on the same lists of blogposts which formed the test cases of the `totalLikes` function, and I wanted to do this in a way that I could define the mock test lists once and use them in both the `describe` blocks (again, DRY principle).
 
 To achieve this, I separated the lists as a global array of arrays and used the same by explicitly specifying which array of blogs I want to use for a certain test, for both the describe blocks. This might help me in the exercises to come. 
-  
+
+
+## Exercise 4.6
+
+I could've used lodash but decided not to, did it myself using a `Map` and a reduce function. For the tests, I had to change the names of the mock authors, so, made those changes (had to make the changes in the previous test as well due to this, but only in the data). All tests pass.
 
 
 ---
