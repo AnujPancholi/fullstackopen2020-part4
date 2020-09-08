@@ -22,9 +22,26 @@ const mostBlogs = (blogs) => {
   });
 }
 
+const mostLikes = (blogs) => {
+  const likesCountMap = new Map();
+  return blogs.reduce((mostLikesObj,blog) => {
+    const authorLikes = blog.likes+(likesCountMap.get(blog.author) || 0);
+    likesCountMap.set(blog.author,authorLikes);
+    if(authorLikes>mostLikesObj.likes){
+      mostLikesObj.author = blog.author;
+      mostLikesObj.likes = authorLikes;
+    }
+    return mostLikesObj;
+  },{
+    author: "",
+    likes: -1
+  })
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
