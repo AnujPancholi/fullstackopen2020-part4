@@ -4,8 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "test": "jest --verbose",
+    "prod": "NODE_ENV=PRODUCTION node src/index.js",
+    "dev": "NODE_ENV=DEVELOPMENT nodemon src/index.js",
+    "test": "NODE_ENV=TEST jest --verbose --runInBand",
     "lint": "eslint ."
   },
   "keywords": [],
