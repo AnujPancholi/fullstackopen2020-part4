@@ -75,4 +75,10 @@ I could've used lodash but decided not to, did it myself using a `Map` and a red
 
 Used an almost identical function as the last one to calculate most likes, with some subtle differences, of course. Wrote tests for the same, and in the last few exercises is where I think the reusability of the tests really shines.
 
+
+## Exercise 4.8
+
+First, I realized I hadn't structured my code properly for the API to be testable, so I structured it in a way that the express app itself was imported by the main `index.js` file. Then I wrote the test and wrote a [custom assertion](https://github.com/visionmedia/supertest#expectfunctionres-). I explicitly returned a promise in the callback of the `test` block because I read in the [Jest docs](https://jestjs.io/docs/en/api#testname-fn-timeout) that if a promise is returned then the `test` block will wait for the execution to complete. I know that `async` functions implicitly wrap a promise so I could've just delclared the callback `async`, but I like to keep things a bit explicit when confusing matters of asynchronous programming in JS are concerned.
+
+
 ---
