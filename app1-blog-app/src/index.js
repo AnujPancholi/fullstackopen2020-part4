@@ -35,5 +35,5 @@ app.use('/api/blogs',blogRouter);
 
 
 app.listen(CONFIG.PORT, () => {
-  console.log(`Server running on port ${CONFIG.PORT}`);
+  logger.info(`Server running on port ${CONFIG.PORT}`);
 })
