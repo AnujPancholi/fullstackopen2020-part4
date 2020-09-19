@@ -82,6 +82,22 @@ describe("TESTS FOR blogs ROUTE",() => {
 
     })
   })
+
+  test("blogs Identifier should be id",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const res = await API.get("/api/blogs");
+        expect(Array.isArray(res.body)).toBe(true);
+        res.body.forEach(doc => {
+          expect(doc.id).toBeDefined();
+          expect(doc._id).not.toBeDefined();
+        })
+        resolve(true);
+      })();
+    })
+  })
+
+
 })
 
 
