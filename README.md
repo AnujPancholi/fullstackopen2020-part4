@@ -81,4 +81,21 @@ Used an almost identical function as the last one to calculate most likes, with 
 First, I realized I hadn't structured my code properly for the API to be testable, so I structured it in a way that the express app itself was imported by the main `index.js` file. Then I wrote the test and wrote a [custom assertion](https://github.com/visionmedia/supertest#expectfunctionres-). I explicitly returned a promise in the callback of the `test` block because I read in the [Jest docs](https://jestjs.io/docs/en/api#testname-fn-timeout) that if a promise is returned then the `test` block will wait for the execution to complete. I know that `async` functions implicitly wrap a promise so I could've just delclared the callback `async`, but I like to keep things a bit explicit when confusing matters of asynchronous programming in JS are concerned.
 
 
+## Exercise 4.9
+
+I had already added the transform function in the model that changed the identifier to `id` from `_id`, so I just used the `toBeDefined()` assertion in jest as suggested by the course to check if `id` is defined and that `_id` is *not* defined.
+
+
+## Exercise 4.10
+
+Added the test, in which the following assertions were added:
+
+ - There should be an `id` in the response of the POST endpoint and it should be a string.
+ - After fetching the blogs via the GET endpoint, the response of the GET endpoint should be an array.
+ - There should be an object in this array which has an `id` that matches the `id` of the new doc (which is the newly entered doc fetched from the DB).
+ - This object should have an `id` field.
+ - That `id` field should match the `id` returned by the POST request, ensuring that it is the same document that was updated.
+ 
+
+
 ---
