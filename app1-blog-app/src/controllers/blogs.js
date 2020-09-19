@@ -44,7 +44,7 @@ blogRouter.post('/', (request, response, next) => {
       resCode: 500
     }
 
-    const MANDATORY_PARAMS = ["title","author","url","likes"];
+    const MANDATORY_PARAMS = ["title","author","url"];
 
     try{
 
@@ -54,7 +54,9 @@ blogRouter.post('/', (request, response, next) => {
         throw new Error(`MANDATORY PARAMS ${missingParams.join(', ')} MISSING`)
       }
 
-      
+      if(!Object.prototype.hasOwnProperty.call(request.body,"likes") || typeof(request.body.likes)!=="number"){
+        request.body.likes = 0;
+      }
 
       const blogEntry = new BlogModel(request.body);
 
