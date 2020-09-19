@@ -55,6 +55,9 @@ const TEST_UPDATE_BLOGS = [{
   "title": "Mock Insert 2",
   "author": "Mock Author 2",
   "url": "https://www.mockblog.com/12345670000"
+},{
+  "author": "Useless Author",
+  "likes": 232
 }]
 
 
@@ -147,6 +150,20 @@ describe("TESTS FOR blogs ROUTE",() => {
         resolve(true);
 
       })();
+    })
+  })
+
+  test("blogs POST should return error code 400 if some mandatory param missing",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const blogToAdd = TEST_UPDATE_BLOGS[2];
+
+        const blogAddResult = await API.post("/api/blogs").send(blogToAdd);
+        expect(blogAddResult.status).toBe(400);
+
+        resolve(true);
+
+      })()
     })
   })
 
