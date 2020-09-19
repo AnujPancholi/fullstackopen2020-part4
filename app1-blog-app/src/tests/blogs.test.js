@@ -51,6 +51,10 @@ const TEST_UPDATE_BLOGS = [{
   "author": "Mock Author",
   "url": "https://www.mockblog.com/123456700000",
   "likes": 0
+},{
+  "title": "Mock Insert 2",
+  "author": "Mock Author 2",
+  "url": "https://www.mockblog.com/12345670000"
 }]
 
 
@@ -121,9 +125,29 @@ describe("TESTS FOR blogs ROUTE",() => {
         expect(freshBlog.id===res.body.id);
         resolve(true);
       })()
-      
-
     });
+  })
+
+  test("blogs POST should set default value for likes to 0 if not given likes",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+
+        const blogToAdd = TEST_UPDATE_BLOGS[1];
+        const blogAddResult = await API.post("/api/blogs").send(blogToAdd);
+        expect(typeof(blogAddResult.body.id)).toBe("string");
+        
+        const blogsFetchResult = await API.get('/api/blogs');
+        expect(Array.isArray(blogsFetchResult.body)).toBe(true);
+
+        const freshBlog = blogsFetchResult.body.find(blog => blog.id===blogAddResult.body.id);
+        expect(freshBlog).toBeDefined();
+        expect(freshBlog.likes).toBeDefined();
+        expect(freshBlog.likes).toBe(0);
+
+        resolve(true);
+
+      })();
+    })
   })
 
 })
