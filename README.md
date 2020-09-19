@@ -101,4 +101,13 @@ Added the test, in which the following assertions were added:
 
 Added the test, in a similar fasion to the previous test, ensures that likes is set to 0 when not given in payload.
 
+
+## Exercise 4.12
+
+Fortunately, I had already added this check in the POST endpoint, making all params except `likes` as mandatory params, with http status code 400 to be returned if they were missinig. All I had to do was to add the test, and it was done.
+
+**NOTE:** Even though all tests are passing, there is an error logged. Since this error actually matches what I'm logging in the blogs POST endpoint itself, I'm assuming it's that and not some error that jest itself is giving me:
+
+![TEST_ERROR_LOGGED](supporting_screenshots/TEST_ERROR_LOGGED.png)
+
 ---
