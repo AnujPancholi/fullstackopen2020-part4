@@ -46,6 +46,14 @@ const TEST_BLOG_DATA = [
 ];
 
 
+const TEST_UPDATE_BLOGS = [{
+  "title": "Mock Insert 1",
+  "author": "Mock Author",
+  "url": "https://www.mockblog.com/123456700000",
+  "likes": 0
+}]
+
+
 beforeEach(() => {
   return new Promise((resolve,reject) => {
 
@@ -97,6 +105,26 @@ describe("TESTS FOR blogs ROUTE",() => {
     })
   })
 
+  test("blogs POST should successfully update document",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const blogUpdateDoc = TEST_UPDATE_BLOGS[0];
+        const res = await API.post("/api/blogs").send(blogUpdateDoc);
+        expect(typeof(res.body.id)).toBe('string');
+
+        const blogsRes = await API.get("/api/blogs");
+        expect(Array.isArray(blogsRes.body)).toBe(true);
+        expect(blogsRes.body.length).toBe(TEST_BLOG_DATA.length+1);
+        const freshBlog = blogsRes.body.find(blog => blog.id===res.body.id);
+        expect(freshBlog).toBeDefined();
+        expect(freshBlog.id).toBeDefined();
+        expect(freshBlog.id===res.body.id);
+        resolve(true);
+      })()
+      
+
+    });
+  })
 
 })
 
