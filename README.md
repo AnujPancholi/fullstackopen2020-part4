@@ -97,5 +97,8 @@ Added the test, in which the following assertions were added:
  - That `id` field should match the `id` returned by the POST request, ensuring that it is the same document that was updated.
  
 
+## Exercise 4.11
+
+Added the test, in a similar fasion to the previous test, ensures that likes is set to 0 when not given in payload.
 
 ---
