@@ -192,6 +192,19 @@ describe("TESTS FOR blogs ROUTE",() => {
     })    
   })
 
+  test("blogs DELETE should return 404 for unknown id",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const dummyId = `asdfghhjkisjuenhfuysebuf`;
+        const deleteResult = await API.delete(`/api/blogs/${dummyId}`);
+
+        expect(deleteResult.status).toBe(404);
+
+        resolve(true);
+      })()
+    })
+  })
+
 })
 
 
