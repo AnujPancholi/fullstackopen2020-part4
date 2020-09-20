@@ -228,10 +228,25 @@ describe("TESTS FOR blogs ROUTE",() => {
 
         resolve(true);
 
+      })()
+    })
+  })
+
+  test("blogs PUT should return 404 for unknown id",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const unknownId = "jfutnvunfuhfuhduifkjrudy";
+        const titleToUpdate = "updated title";
+
+        const updateResult = await API.put(`/api/blogs/${unknownId}`);
+        expect(updateResult.status).toBe(404);
+
+        resolve(true);
 
       })()
     })
   })
+
 
 })
 
