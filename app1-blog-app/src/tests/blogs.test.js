@@ -183,8 +183,8 @@ describe("TESTS FOR blogs ROUTE",() => {
         } = deleteResult.body;
         expect(deletedDocFromDb).toBeDefined();
         expect(deletedDocFromDb.id).toBeDefined();
-        expect(deletedDocFromDb.id.toString()===blogDocument.id);
-        expect(deletedDocFromDb.title===blogDocument.title);
+        expect(deletedDocFromDb.id.toString()).toBe(blogDocument.id);
+        expect(deletedDocFromDb.title).toBe(blogDocument.title);
 
         resolve(true); 
 
@@ -201,6 +201,34 @@ describe("TESTS FOR blogs ROUTE",() => {
         expect(deleteResult.status).toBe(404);
 
         resolve(true);
+      })()
+    })
+  })
+
+  test("blogs PUT should update likes in document",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const titleToUpdate = "updated title";
+        const blogsFetchResult = await API.get('/api/blogs');
+        expect(Array.isArray(blogsFetchResult.body)).toBe(true);
+        const [blogToUpdate] = blogsFetchResult.body;
+        expect(blogToUpdate).toBeDefined();
+        expect(blogToUpdate.id).toBeDefined();
+        const updateResult = await API.put(`/api/blogs/${blogToUpdate.id}`).send({
+          title: titleToUpdate
+        });
+        
+        expect(updateResult.status).toBe(200);
+        const {
+          updated_record: updatedDocument
+        } = updateResult.body;
+
+        expect(updatedDocument.id).toBe(blogToUpdate.id);
+        expect(updatedDocument.title).toBe(titleToUpdate);
+
+        resolve(true);
+
+
       })()
     })
   })
