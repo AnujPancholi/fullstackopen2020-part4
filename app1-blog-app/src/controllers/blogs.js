@@ -103,7 +103,7 @@ blogRouter.delete("/:id",(req,res,next) => {
         _id: mongooseUtils.getObjectId(req.params.id)
       })
 
-      console.log(`DELETE RESULT:`,removalResult);
+      // console.log(`DELETE RESULT:`,removalResult);
 
       if(removalResult===null){
         resultObj.resCode = 404;

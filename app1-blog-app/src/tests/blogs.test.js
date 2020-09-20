@@ -167,6 +167,31 @@ describe("TESTS FOR blogs ROUTE",() => {
     })
   })
 
+  test("blogs DELETE should delete a document",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const blogsResponse = await API.get('/api/blogs');
+        expect(Array.isArray(blogsResponse.body)).toBe(true);
+        const [blogDocument] = blogsResponse.body;
+        expect(blogDocument).toBeDefined();
+        expect(blogDocument.id).toBeDefined();
+        expect(blogDocument.title).toBeDefined();
+
+        const deleteResult = await API.delete(`/api/blogs/${blogDocument.id}`);
+        const {
+          deleted_record: deletedDocFromDb
+        } = deleteResult.body;
+        expect(deletedDocFromDb).toBeDefined();
+        expect(deletedDocFromDb.id).toBeDefined();
+        expect(deletedDocFromDb.id.toString()===blogDocument.id);
+        expect(deletedDocFromDb.title===blogDocument.title);
+
+        resolve(true); 
+
+      })()
+    })    
+  })
+
 })
 
 
