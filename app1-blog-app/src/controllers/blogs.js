@@ -132,6 +132,51 @@ blogRouter.delete("/:id",(req,res,next) => {
 
 })
 
+blogRouter.put('/:id',(req,res,next) => {
+  (async() => {
+
+    const resultObj = {
+      success: false,
+      error: null,
+      data: null,
+      resCode: 500
+    }
+
+    try{
+      const updateObject = req.body;
+      const updatedDocument = await BlogModel.findOneAndUpdate({
+        _id: mongooseUtils.getObjectId(req.params.id)
+      },
+      updateObject,
+      {
+        new: true
+      });
+      if(updatedDocument===null){
+        resultObj.resCode = 404;
+        throw new Error("NO RECORD FOUND");
+      }
+      resultObj.success = true;
+      resultObj.error = null;
+      resultObj.data = {
+        message: "SUCCESSFULLY UPDATED",
+        updated_record: updatedDocument
+      }
+      resultObj.resCode = 200;
+
+    }catch(e){
+      resultObj.success = false;
+      resultObj.error = {
+        message: e.message || "INTERNAL SERVER ERROR"
+      }
+      resultObj.resCode = resultObj.resCode>399 ? resultObj.resCode : 500;
+      resultObj.data = null;
+    }
+
+    next(resultObj);
+    
+  })()
+})
+
 const requestProcessingResultHandler = (resultObj,req,res,next) => {
   if(resultObj.success){
     res.status(resultObj.resCode).send(resultObj.data);

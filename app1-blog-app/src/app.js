@@ -12,7 +12,8 @@ const logger = require('./utils/logger.js');
 Mongoose.connect(CONFIG.DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false
 }).catch(error => {
   logger.error(`FATAL: DB CONNECTION ERROR: ${error}`);
   process.exit(1);
