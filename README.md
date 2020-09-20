@@ -110,4 +110,10 @@ Fortunately, I had already added this check in the POST endpoint, making all par
 
 ![TEST_ERROR_LOGGED](supporting_screenshots/TEST_ERROR_LOGGED.png)
 
+
+## Exercise 4.13
+
+Added the functionality first, as an API endponint with path `/api/blogs/:id` then first verified via Postman. Added the tests after doing this. In the test to verify whether the correct document was being deleted, I first had to fetch the document (as I would not know what `id` any given document was going to have), and then delete the same document using its `id`.
+
+
 ---
