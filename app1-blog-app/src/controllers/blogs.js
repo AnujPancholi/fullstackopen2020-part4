@@ -3,6 +3,8 @@
 const blogRouter = require('express').Router();
 const BlogModel = require('../models/blogs.js');
 const logger = require('../utils/logger.js');
+const mongooseUtils = require("../utils/mongooseUtils.js");
+
 
 
 blogRouter.get('/', (request, response, next) => {
@@ -83,6 +85,30 @@ blogRouter.post('/', (request, response, next) => {
 
   })();
 })
+
+
+// blogRouter.delete("/:id",(req,res,next) => {
+
+//   (async() => {
+
+//     const resultObj = {
+//       success: false,
+//       error: null,
+//       data: null,
+//       resCode: 500
+//     }
+
+//     try{
+//       const removalResult = await BlogModel.findOneAndRemove({
+//         _id: 
+//       })
+
+//     }catch(e){
+
+//     }
+//   })()
+
+// })
 
 const requestProcessingResultHandler = (resultObj,req,res,next) => {
   if(resultObj.success){
