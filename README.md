@@ -134,6 +134,9 @@ The user schema has the following properties as of now:
  **NOTE:** I have not implemented token-based authorization yet, and from what I can see, that is coming up in a later exercise. 
 
 
+## Exercise 4.16
+
+I had already added most of these validations, just added the unique username validation at the mongoose level and wrote tests for this endpont covering a wide range of possibilities, should be self-explanatory.
 
 
 ---
