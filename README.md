@@ -115,5 +115,25 @@ Fortunately, I had already added this check in the POST endpoint, making all par
 
 Added the functionality first, as an API endponint with path `/api/blogs/:id` then first verified via Postman. Added the tests after doing this. In the test to verify whether the correct document was being deleted, I first had to fetch the document (as I would not know what `id` any given document was going to have), and then delete the same document using its `id`.
 
+## Exercise 4.14
+
+Added the PUT endpint and wrote the tests for the same, ensuring that the document with the correct id is updated.
+
+
+## Exercise 4.15
+
+Added the user controller and model.
+
+The user schema has the following properties as of now:
+
+ - `username`: as mandated by the course.
+ - `user_type`: this will decide which type of user it is, currently it is an enum of ADMIN and STD (standard user). Later, I will implement a middleware to ensure that only ADMIN users can make new users.
+ - `name`: as mandated by the course.
+ - `auth`: this will be an object that will contain the `hash`. I made it an object because in the future, we may want to expose the API for this blog app (say, to some hypothetical customer), so we can use this `auth` object to store the API key for that user as well. While fetching the users via API, we can simply drop the auth object out with a projection, so no sensitive information is sent in the API response.
+
+ **NOTE:** I have not implemented token-based authorization yet, and from what I can see, that is coming up in a later exercise. 
+
+
+
 
 ---
