@@ -11,7 +11,7 @@ const validateUserCreation = (req,res,next) => {
   const USER_CREATION_PARAMS = {
     MIN_PASS_LENGTH: 3,
     PASS_SALTING_ROUNDS: 10,
-    MIN_USERNAME_LENGTHL: 3,
+    MIN_USERNAME_LENGTH: 3,
   }
 
   req.USER_CREATION_PARAMS = USER_CREATION_PARAMS;

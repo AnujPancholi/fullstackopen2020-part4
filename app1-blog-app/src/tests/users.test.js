@@ -49,6 +49,12 @@ const MOCK_INVALID_USER_UPDATE_OBJECTS = [{
   "password": "bloggy123"
 }]
 
+const MOCK_USER_UPDATE_OBJECTS = [{
+  "username": "user 3",
+  "name": "Author 3",
+  "password": "blog123"
+}]
+
 const addHashToTestUserObj = (userObj) => {
     
   return new Promise((resolve,reject) => {
@@ -103,9 +109,63 @@ describe("TESTS FOR users POST route",() => {
         const postResult = await API.post('/api/users').send(MOCK_INVALID_USER_UPDATE_OBJECTS[0]);
         expect(postResult.status).toBe(400);
         resolve(true);
-      })()
+      })();
     })
   })
+
+  test("users POST should return 400 in case of short username",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const postResult = await API.post('/api/users').send(MOCK_INVALID_USER_UPDATE_OBJECTS[1]);
+        expect(postResult.status).toBe(400);
+        resolve(true);
+      })();
+    })
+  })
+
+  test("users POST should return 400 in case of no password",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const postResult = await API.post('/api/users').send(MOCK_INVALID_USER_UPDATE_OBJECTS[2]);
+        expect(postResult.status).toBe(400);
+        resolve(true);
+      })();
+    })
+  })
+
+  test("users POST should return 400 in case of short password",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const postResult = await API.post("/api/users").send(MOCK_INVALID_USER_UPDATE_OBJECTS[3]);
+        expect(postResult.status).toBe(400);
+        resolve(true);
+      })();
+    })
+  })
+
+  test("users POST should return duplicate key error in case of existing username",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const postResult = await API.post('/api/users').send(MOCK_INVALID_USER_UPDATE_OBJECTS[4]);
+        expect(postResult.status).toBe(500);
+        expect(typeof postResult.body.message).toBe("string");
+        expect(postResult.body.message.indexOf("duplicate key error")>-1).toBe(true);
+        resolve(true);
+      })();
+    })
+  })
+
+  test("users POST should return 200 with id in case of successful creation",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const postResult = await API.post("/api/users").send(MOCK_USER_UPDATE_OBJECTS[0]);
+        expect(postResult.status).toBe(200);
+        expect(typeof postResult.body.id).toBe("string");
+        resolve(true);
+      })();
+    })
+  })
+
 })
 
 
