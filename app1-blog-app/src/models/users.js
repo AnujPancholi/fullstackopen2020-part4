@@ -9,6 +9,11 @@ const userSchema = new Mongoose.Schema({
     required: true,
     minlength: 3
   },
+  name: {
+    type: String,
+    required: true,
+    minlength: 3
+  },
   user_type: {
     type: String,
     enum: ["ADMIN","STD"],

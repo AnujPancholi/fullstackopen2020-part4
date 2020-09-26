@@ -32,6 +32,7 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
     try {
       const userObj = {
         username: req.body.username,
+        name: req.body.name,
         password: req.body.password,
         user_type: req.body.user_type || "STD"
       }
@@ -44,6 +45,16 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
           "message": "INVALID USERNAME"
         }
       }
+
+      if(!userObj.name || userObj.name.length<req.USER_CREATION_PARAMS.MIN_USERNAME_LENGTH){
+        resultObj.success = false;
+        resultObj.data = null;
+        resultObj.resCode = 400;
+        resultObj.error = {
+          "message": "INVALID NAME"
+        }
+      }
+
 
       if(!userObj.password || userObj.password.length<req.USER_CREATION_PARAMS.MIN_PASS_LENGTH){
         resultObj.success = false;
