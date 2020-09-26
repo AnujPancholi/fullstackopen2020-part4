@@ -44,6 +44,7 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
         resultObj.error = {
           "message": "INVALID USERNAME"
         }
+        throw new Error("INVALID USERNAME");
       }
 
       if(!userObj.name || userObj.name.length<req.USER_CREATION_PARAMS.MIN_USERNAME_LENGTH){
@@ -53,6 +54,7 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
         resultObj.error = {
           "message": "INVALID NAME"
         }
+        throw new Error("INVALID NAME");
       }
 
 
@@ -63,9 +65,10 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
         resultObj.error = {
           "message": "INVALID PASSWORD"
         }
+        throw new Error("INVALID PASSWORD")
       }
 
-      const hashedPass = await bcrypt.hash(userObj.password,req.PASS_SALTING_ROUNDS);
+      const hashedPass = await bcrypt.hash(userObj.password,req.USER_CREATION_PARAMS.PASS_SALTING_ROUNDS);
 
       userObj.auth = {
         hash: hashedPass
@@ -74,7 +77,7 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
 
       const userEntry = new UserModel(userObj);
 
-      const userEntryResult = userEntry.save();
+      const userEntryResult = await userEntry.save();
 
       resultObj.success = true;
       resultObj.data = {
@@ -88,10 +91,10 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
     } catch(e) {
       resultObj.success = false;
       resultObj.data = null;
-      resultObj.error = {
+      resultObj.error = resultObj.error ? resultObj.error : {
         message: e.message || "INTERNAL SERVER ERROR"
-      }
-      resultObj.resCode = 500;
+      };
+      resultObj.resCode = resultObj.resCode>=400 ? resultObj.resCode : 500;
     }
 
     next(resultObj);

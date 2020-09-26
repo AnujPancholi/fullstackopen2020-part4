@@ -27,11 +27,13 @@ const cors = require('cors');
 
 //controllers (routes)
 const blogRouter = require('./controllers/blogs.js');
+const userRouter = require("./controllers/users.js");
 
 //middlewares
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/users",userRouter);
 app.use('/api/blogs',blogRouter);
 
 module.exports = app;
