@@ -30,6 +30,25 @@ const MOCK_USER_DATA = [{
   }
 }]
 
+const MOCK_INVALID_USER_UPDATE_OBJECTS = [{
+
+},{
+  "username": "Bl",
+  "name": "Author Unknown",
+  "password": "blog123"
+},{
+  "username": "User 8",
+  "name": "Author Unknown",
+},{
+  "username": "User 9",
+  "name": "Author Unknown",
+  "password": "bl"
+},{
+  "username": "user 2",
+  "name": "Author Unknown",
+  "password": "bloggy123"
+}]
+
 const addHashToTestUserObj = (userObj) => {
     
   return new Promise((resolve,reject) => {
@@ -60,7 +79,7 @@ beforeEach(() => {
   })
 },10000)
 
-describe("TESTS FOR users GET routes",() => {
+describe("TESTS FOR users GET route",() => {
   test("users GET should return list of users",() => {
 
     return new Promise((resolve,reject) => {
@@ -74,6 +93,18 @@ describe("TESTS FOR users GET routes",() => {
       })();
     })
 
+  })
+})
+
+describe("TESTS FOR users POST route",() => {
+  test("users POST should return 400 in case of no parameters",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const postResult = await API.post('/api/users').send(MOCK_INVALID_USER_UPDATE_OBJECTS[0]);
+        expect(postResult.status).toBe(400);
+        resolve(true);
+      })()
+    })
   })
 })
 

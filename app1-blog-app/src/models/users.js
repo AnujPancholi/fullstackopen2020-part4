@@ -7,6 +7,7 @@ const userSchema = new Mongoose.Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
     minlength: 3
   },
   name: {
