@@ -103,6 +103,40 @@ userRouter.post('/',validateUserCreation,(req,res,next) => {
 
 })
 
+
+userRouter.get('/',(req,res,next) => {
+  (async() => {
+    const resultObj = {
+      success: false,
+      error: null,
+      data: null,
+      resCode: 500
+    }
+    try {
+      const users = await UserModel.find({},{
+        auth: 0
+      });
+
+      resultObj.success = true;
+      resultObj.error = null;
+      resultObj.resCode = 200;
+      resultObj.data = users;
+
+    } catch(e) {
+      resultObj.success = false;
+      resultObj.data = null;
+      resultObj.error = resultObj.error ? resultObj.error : {
+        message: e.message || "INTERNAL SERVER ERROR"
+      };
+      resultObj.resCode = resultObj.resCode>=400 ? resultObj.resCode : 500;
+    }
+
+    next(resultObj);
+
+  })();
+})
+
+
 const requestProcessingResultHandler = (resultObj,req,res,next) => {
   if(resultObj.success){
     res.status(resultObj.resCode).send(resultObj.data);
