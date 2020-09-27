@@ -58,6 +58,8 @@ blogRouter.get('/', (request, response, next) => {
             }
           },{
             $project: {
+              "id": "$_id",
+              "_id": 0,
               "username": "$username",
               "name": "$name"
             }
@@ -67,6 +69,16 @@ blogRouter.get('/', (request, response, next) => {
       },{
         $unwind: {
           path: "$user"
+        }
+      },{
+        $project: {
+          "id": "$_id",
+          "_id": 0,
+          "title": 1,
+          "author": 1,
+          "url": 1,
+          "likes": 1,
+          "user": 1
         }
       }]);
 

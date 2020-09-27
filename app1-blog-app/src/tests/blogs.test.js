@@ -4,10 +4,45 @@
 const supertest = require("supertest");
 const app = require("../app.js");
 const Mongoose = require("mongoose");
+const mongooseUtils = require("../utils/mongooseUtils.js");
 const BlogModel = require("../models/blogs.js");
+const UserModel = require("../models/users.js");
+const bcrypt = require("bcrypt");
 
 
 const API = supertest(app);
+
+
+const PASS_SALTING_ROUNDS = 10;
+
+const addHashToTestUserObj = (userObj) => {
+    
+  return new Promise((resolve,reject) => {
+    (async() => {
+      const hash = await bcrypt.hash(userObj.auth.password,PASS_SALTING_ROUNDS);
+      userObj.auth.hash = hash;
+      delete userObj.password;
+      resolve(true);
+    })();
+  })
+    
+}
+
+const MOCK_USER_DATA = [{
+  "username": "user 1",
+  "name": "Author 1",
+  "user_type": "ADMIN",
+  "auth": {
+    "password": "pass1"
+  }
+},{
+  "username": "user 2",
+  "name": "Author 2",
+  "user_type": "STD",
+  "auth": {
+    "password": "pass2"    
+  }
+}]
 
 
 const TEST_BLOG_DATA = [
@@ -15,30 +50,35 @@ const TEST_BLOG_DATA = [
   {
     "title": "Mock Blog Title",
     "author": "Author 1",
+    "userIndex": 0,
     "url": "https://www.mockblog.com/123456",
     "likes": 23
   },
   {
     "title": "Mock Blog Title 2",
     "author": "Author 2",
+    "userIndex": 1,
     "url": "https://www.mockblog.com/1234567",
     "likes": 544
   },
   {
     "title": "Mock Blog Title 3",
     "author": "Author 1",
+    "userIndex": 0,
     "url": "https://www.mockblog.com/1234567",
     "likes": 8698
   },
   {
     "title": "Mock Blog Title 4",
     "author": "Author 1",
+    "userIndex": 0,
     "url": "https://www.mockblog.com/1234567",
     "likes": 0
   },
   {
     "title": "Mock Blog Title 5",
     "author": "Author 2",
+    "userIndex": 1,
     "url": "https://www.mockblog.com/1234567",
     "likes": 2
   }
@@ -66,8 +106,15 @@ beforeEach(() => {
 
     (async() => {
       try{
+        await UserModel.deleteMany({});
+        await Promise.all(MOCK_USER_DATA.map(userData => addHashToTestUserObj(userData)));
+        const userSetupResult = await Promise.all(MOCK_USER_DATA.map(testUserObj => {
+          return (new UserModel(testUserObj)).save();
+        }));
+
         await BlogModel.deleteMany({});
-        await Promise.all(TEST_BLOG_DATA.map(testBlogObj => {
+        await Promise.all(TEST_BLOG_DATA.map((testBlogObj, index) => {
+          testBlogObj.userId = mongooseUtils.getObjectId(userSetupResult[testBlogObj["userIndex"]]._id);
           return (new BlogModel(testBlogObj)).save();
         }));
         resolve("TEST DB SET UP");
