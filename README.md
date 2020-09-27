@@ -139,4 +139,15 @@ The user schema has the following properties as of now:
 I had already added most of these validations, just added the unique username validation at the mongoose level and wrote tests for this endpont covering a wide range of possibilities, should be self-explanatory.
 
 
+## Exercise 4.17
+
+Had I stored some properties of the blogs in users as an array of objects like shown in the course, in case of update of any property of a blog (say title, url, etc) I would have had to make changes to those properties in users as well as in the blog document, or store everything in one users collection and abandon the blogs collection altogether.
+
+Instead, to model the one-to-many relationship between users and blogs, I decided to store the `_id` of the `user` in each `blog` as an `ObjectId`.
+
+This would make for complex queries to fetch data in the GET routes, but the problem of inconsistencies will be resolved.
+
+I could've made multiple queries and then joined the data in my code, but decided to use `$lookup` instead, which would be more performant. After inplementing the aggregations in users and blogs GET endopoints, I found that many of the tests were failing - primarily because the identifier property was `id` and the aggregation was returning `_id`. I found some easy way to do this, like a `transform` function for aggregation in mongoose (which I did not find) or any stage in the aggregation pipeline with which you could selectively map only some properties to a different keyname (which I found none), but ultimately I had to go with the obvious approach - `$project` stage in the pipeline. This was cumbersome, but it got the job done.
+
+
 ---
