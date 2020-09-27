@@ -39,7 +39,37 @@ blogRouter.get('/', (request, response, next) => {
     }
 
     try{
-      const allBlogsResult = await BlogModel.find({});
+      // const allBlogsResult = await BlogModel.find({});
+
+      const allBlogsResult = await BlogModel.aggregate([{
+        $match: {
+        }
+      },{
+        $lookup: {
+          "from": "users",
+          "let": {
+            "userId": "$userId"
+          },
+          "pipeline": [{
+            $match: {
+              $expr: {
+                $eq: ["$_id","$$userId"]
+              }
+            }
+          },{
+            $project: {
+              "username": "$username",
+              "name": "$name"
+            }
+          }],
+          "as": "user"
+        }
+      },{
+        $unwind: {
+          path: "$user"
+        }
+      }]);
+
       resultObj.success = true;
       resultObj.data = allBlogsResult;
       resultObj.error = null;
