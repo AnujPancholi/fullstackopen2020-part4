@@ -10,6 +10,9 @@ const blogSchema = new Mongoose.Schema({
   author: {
     type: String
   },
+  userId: {
+    type: Mongoose.Types.ObjectId
+  },
   url: {
     type: String
   },

@@ -2,9 +2,31 @@
 
 const blogRouter = require('express').Router();
 const BlogModel = require('../models/blogs.js');
+const UserModel = require('../models/users.js');
 const logger = require('../utils/logger.js');
 const mongooseUtils = require("../utils/mongooseUtils.js");
 
+
+const getUserIdForNewBlog = (userId = null) => {
+  return new Promise((resolve,reject) => {
+    (async() => {
+      try{
+        const userQuery = {};
+        if(typeof userId === "string"){
+          userQuery._id = mongooseUtils.getObjectId(userId);
+        }
+        const userEntry = await UserModel.findOne(userQuery,{
+          _id: 1
+        }).exec();
+        
+        resolve(userEntry && userEntry._id ? userEntry._id : null);
+        
+      }catch(e){
+        reject(e);
+      }
+    })();
+  })
+} 
 
 
 blogRouter.get('/', (request, response, next) => {
@@ -59,6 +81,12 @@ blogRouter.post('/', (request, response, next) => {
       if(!Object.prototype.hasOwnProperty.call(request.body,"likes") || typeof(request.body.likes)!=="number"){
         request.body.likes = 0;
       }
+
+      const userIdForBlog = await getUserIdForNewBlog(request.body.userId || null);
+      if(!userIdForBlog){
+        throw new Error("USER NOT FOUND FOR BLOG");
+      }
+      request.body.userId = userIdForBlog;
 
       const blogEntry = new BlogModel(request.body);
 
