@@ -113,9 +113,48 @@ userRouter.get('/',(req,res,next) => {
       resCode: 500
     }
     try {
-      const users = await UserModel.find({},{
-        auth: 0
-      });
+      // const users = await UserModel.find({},{
+      //   auth: 0
+      // });
+
+      const users = await UserModel.aggregate([{
+        $match: {
+
+        }
+      },{
+        $lookup: {
+          "from": "blogs",
+          "let": {
+            "userId": "$_id"
+          },
+          "pipeline": [{
+            $match: {
+              $expr: {
+                $eq: ["$userId","$$userId"]
+              }
+            }
+          },{
+            $project: {
+              "id": "$_id",
+              "_id": 0,
+              "title": 1,
+              "author": 1,
+              "url": 1,
+              "likes": 1
+            }
+          }],
+          "as": "blogs"
+        }
+      },{
+        $project: {
+          "id": "$_id",
+          "_id": 0,
+          "username": 1,
+          "name": 1,
+          "user_type": 1,
+          "blogs": 1
+        }
+      }])
 
       resultObj.success = true;
       resultObj.error = null;
