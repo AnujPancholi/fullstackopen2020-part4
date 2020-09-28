@@ -31,8 +31,12 @@ const userRouter = require("./controllers/users.js");
 const loginRouter = require("./controllers/login.js");
 
 //middlewares
+const tokenValidator = require("./middlewares/tokenValidator.js");
+
 app.use(cors());
 app.use(express.json());
+
+app.use(tokenValidator);
 
 app.use("/api/login",loginRouter);
 app.use("/api/users",userRouter);
