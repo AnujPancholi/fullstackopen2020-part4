@@ -138,7 +138,7 @@ blogRouter.post('/', tokenValidator, (request, response, next) => {
 })
 
 
-blogRouter.delete("/:id",(req,res,next) => {
+blogRouter.delete("/:id",tokenValidator,(req,res,next) => {
 
   (async() => {
 
@@ -150,7 +150,9 @@ blogRouter.delete("/:id",(req,res,next) => {
     }
 
     try{
+
       const removalResult = await BlogModel.findOneAndRemove({
+        userId: mongooseUtils.getObjectId(req.user.id),
         _id: mongooseUtils.getObjectId(req.params.id)
       })
 
@@ -158,7 +160,7 @@ blogRouter.delete("/:id",(req,res,next) => {
 
       if(removalResult===null){
         resultObj.resCode = 404;
-        throw new Error("NO RECORD FOUND");
+        throw new Error("NO RECORD FOUND FOR USER");
       }
 
       resultObj.success = true;
