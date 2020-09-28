@@ -4,9 +4,10 @@
 const loginRouter = require("express").Router();
 const UserModel = require("../models/users.js");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const logger = require('../utils/logger.js');
-const { JWT_SECRET } = require('../utils/config.js');
+const {
+  getSignedToken
+} = require("../utils/auth_helpers.js");
 
 const decodeBase64String = (str) => {
   return Buffer.from(str,"base64").toString('utf8');
@@ -76,9 +77,9 @@ loginRouter.post('/',(req,res,next) => {
       }
 
       if(await bcrypt.compare(loginDetails.password,userObj.auth.hash)){
-        const token = jwt.sign({
+        const token = getSignedToken({
           ...userObj
-        },JWT_SECRET);
+        });
         resultObj.success = true;
         resultObj.resCode = 200;
         resultObj.error = null;
