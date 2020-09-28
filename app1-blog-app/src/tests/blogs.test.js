@@ -108,6 +108,12 @@ const TEST_UPDATE_BLOGS = [{
 }]
 
 
+const TEST_DELETE_BLOGS = [{
+  "title": "Mock Blog Title 4",
+  "userIndex": 0
+}]
+
+
 beforeEach(() => {
   return new Promise((resolve,reject) => {
 
@@ -127,6 +133,10 @@ beforeEach(() => {
               id: userSetupResult[index]._id.toString()
             })
           }
+        })
+
+        TEST_DELETE_BLOGS.forEach((mockBlog) => {
+          mockBlog.token = userTokens[mockBlog.userIndex].token
         })
 
         TEST_UPDATE_BLOGS.forEach((mockBlog) => {
@@ -235,17 +245,35 @@ describe("TESTS FOR blogs ROUTE",() => {
     })
   })
 
+  test("blogs POST should return error code 401 if no token passed",() => {
+    return new Promise((resolve,reject) => {
+      (async() => {
+        const blogToAdd = TEST_UPDATE_BLOGS[2];
+
+        const blogAddResult = await API.post("/api/blogs").send(blogToAdd);
+        expect(blogAddResult.status).toBe(401);
+
+        resolve(true);
+
+      })()
+    })
+  })
+
   test("blogs DELETE should delete a document",() => {
     return new Promise((resolve,reject) => {
       (async() => {
         const blogsResponse = await API.get('/api/blogs');
         expect(Array.isArray(blogsResponse.body)).toBe(true);
-        const [blogDocument] = blogsResponse.body;
+        // const [blogDocument] = blogsResponse.body;
+        const blogDeleteDetails = TEST_DELETE_BLOGS[0];
+        const blogDocument = blogsResponse.body.find(blogDoc => blogDoc.title===blogDeleteDetails.title);
         expect(blogDocument).toBeDefined();
         expect(blogDocument.id).toBeDefined();
         expect(blogDocument.title).toBeDefined();
 
-        const deleteResult = await API.delete(`/api/blogs/${blogDocument.id}`);
+
+
+        const deleteResult = await API.delete(`/api/blogs/${blogDocument.id}`).set("Authorization",`Bearer ${blogDeleteDetails.token}`);
         const {
           deleted_record: deletedDocFromDb
         } = deleteResult.body;
@@ -264,7 +292,8 @@ describe("TESTS FOR blogs ROUTE",() => {
     return new Promise((resolve,reject) => {
       (async() => {
         const dummyId = `asdfghhjkisjuenhfuysebuf`;
-        const deleteResult = await API.delete(`/api/blogs/${dummyId}`);
+        const blogDeleteDetails = TEST_DELETE_BLOGS[0];
+        const deleteResult = await API.delete(`/api/blogs/${dummyId}`).set("Authorization",`Bearer ${blogDeleteDetails.token}`);
 
         expect(deleteResult.status).toBe(404);
 
