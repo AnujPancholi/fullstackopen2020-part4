@@ -158,4 +158,11 @@ Anyway, for the purpose of this exercise, I have simply made a `tokenValidator` 
 **NOTE:** The token validation middleware will **not** return an error up until this point, if no jwt/incorrect jwt is supplied, as it's unclear which endpoints we want to protect.
 
 
+## Exercise 4.19
+
+Now that it was clear what I had to add the token validation for, I removed the `tokenValidator` middleware from `app.js`, modified it to respond with 401 if no valid token was received, and added it specifically to the blogs POST endpoint. I could add this middleware in whichever route/endpoint I wish.
+
+Also, although it was not a requirement (I found this out later), the tests that all these changes break have been fixed with some trickery. Test coverage is not ideal though, as I haven't added more tests to cover some scenarios that these changes have introduced (for example, no valid token sent in blogs POST). 
+
+
 ---
