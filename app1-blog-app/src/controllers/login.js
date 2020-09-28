@@ -78,7 +78,9 @@ loginRouter.post('/',(req,res,next) => {
 
       if(await bcrypt.compare(loginDetails.password,userObj.auth.hash)){
         const token = getSignedToken({
-          ...userObj
+          username: userObj.username,
+          name: userObj.name,
+          id: userObj.id.toString()
         });
         resultObj.success = true;
         resultObj.resCode = 200;

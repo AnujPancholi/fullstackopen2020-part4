@@ -8,6 +8,10 @@ const mongooseUtils = require("../utils/mongooseUtils.js");
 const BlogModel = require("../models/blogs.js");
 const UserModel = require("../models/users.js");
 const bcrypt = require("bcrypt");
+const {
+  getSignedToken
+} = require("../utils/auth_helpers.js");
+const { JWT_SECRET } = require("../utils/config.js");
 
 
 const API = supertest(app);
@@ -87,15 +91,18 @@ const TEST_BLOG_DATA = [
 
 
 const TEST_UPDATE_BLOGS = [{
+  "userIndex": 0,
   "title": "Mock Insert 1",
   "author": "Mock Author",
   "url": "https://www.mockblog.com/123456700000",
   "likes": 0
 },{
+  "userIndex": 1,
   "title": "Mock Insert 2",
   "author": "Mock Author 2",
   "url": "https://www.mockblog.com/12345670000"
 },{
+  "userIndex": 0,
   "author": "Useless Author",
   "likes": 232
 }]
@@ -111,6 +118,20 @@ beforeEach(() => {
         const userSetupResult = await Promise.all(MOCK_USER_DATA.map(testUserObj => {
           return (new UserModel(testUserObj)).save();
         }));
+
+        const userTokens = MOCK_USER_DATA.map((mockObj,index) => {
+          return {
+            token: getSignedToken({
+              username: mockObj.username,
+              name: mockObj.name,
+              id: userSetupResult[index]._id.toString()
+            })
+          }
+        })
+
+        TEST_UPDATE_BLOGS.forEach((mockBlog) => {
+          mockBlog.token = userTokens[mockBlog.userIndex].token;
+        })
 
         await BlogModel.deleteMany({});
         await Promise.all(TEST_BLOG_DATA.map((testBlogObj, index) => {
@@ -163,7 +184,7 @@ describe("TESTS FOR blogs ROUTE",() => {
     return new Promise((resolve,reject) => {
       (async() => {
         const blogUpdateDoc = TEST_UPDATE_BLOGS[0];
-        const res = await API.post("/api/blogs").send(blogUpdateDoc);
+        const res = await API.post("/api/blogs").set("Authorization",`Bearer ${blogUpdateDoc.token}`).send(blogUpdateDoc);
         expect(typeof(res.body.id)).toBe('string');
 
         const blogsRes = await API.get("/api/blogs");
@@ -183,7 +204,7 @@ describe("TESTS FOR blogs ROUTE",() => {
       (async() => {
 
         const blogToAdd = TEST_UPDATE_BLOGS[1];
-        const blogAddResult = await API.post("/api/blogs").send(blogToAdd);
+        const blogAddResult = await API.post("/api/blogs").set("Authorization",`Bearer ${blogToAdd.token}`).send(blogToAdd);
         expect(typeof(blogAddResult.body.id)).toBe("string");
         
         const blogsFetchResult = await API.get('/api/blogs');
@@ -205,7 +226,7 @@ describe("TESTS FOR blogs ROUTE",() => {
       (async() => {
         const blogToAdd = TEST_UPDATE_BLOGS[2];
 
-        const blogAddResult = await API.post("/api/blogs").send(blogToAdd);
+        const blogAddResult = await API.post("/api/blogs").set("Authorization",`Bearer ${blogToAdd.token}`).send(blogToAdd);
         expect(blogAddResult.status).toBe(400);
 
         resolve(true);

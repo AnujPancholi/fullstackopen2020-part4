@@ -5,28 +5,8 @@ const BlogModel = require('../models/blogs.js');
 const UserModel = require('../models/users.js');
 const logger = require('../utils/logger.js');
 const mongooseUtils = require("../utils/mongooseUtils.js");
+const tokenValidator = require("../middlewares/tokenValidator.js");
 
-
-const getUserIdForNewBlog = (userId = null) => {
-  return new Promise((resolve,reject) => {
-    (async() => {
-      try{
-        const userQuery = {};
-        if(typeof userId === "string"){
-          userQuery._id = mongooseUtils.getObjectId(userId);
-        }
-        const userEntry = await UserModel.findOne(userQuery,{
-          _id: 1
-        }).exec();
-        
-        resolve(userEntry && userEntry._id ? userEntry._id : null);
-        
-      }catch(e){
-        reject(e);
-      }
-    })();
-  })
-} 
 
 
 blogRouter.get('/', (request, response, next) => {
@@ -101,7 +81,7 @@ blogRouter.get('/', (request, response, next) => {
   })();
 })
 
-blogRouter.post('/', (request, response, next) => {
+blogRouter.post('/', tokenValidator, (request, response, next) => {
   (async() => {
     const resultObj = {
       success: false,
@@ -110,7 +90,7 @@ blogRouter.post('/', (request, response, next) => {
       resCode: 500
     }
 
-    const MANDATORY_PARAMS = ["title","author","url"];
+    const MANDATORY_PARAMS = ["title","url"];
 
     try{
 
@@ -124,11 +104,12 @@ blogRouter.post('/', (request, response, next) => {
         request.body.likes = 0;
       }
 
-      const userIdForBlog = await getUserIdForNewBlog(request.body.userId || null);
+      const userIdForBlog = mongooseUtils.getObjectId(request.user.id);
       if(!userIdForBlog){
         throw new Error("USER NOT FOUND FOR BLOG");
       }
       request.body.userId = userIdForBlog;
+      request.body.author = request.user.name;
 
       const blogEntry = new BlogModel(request.body);
 
