@@ -164,5 +164,9 @@ Now that it was clear what I had to add the token validation for, I removed the 
 
 Also, although it was not a requirement (I found this out later), the tests that all these changes break have been fixed with some trickery. Test coverage is not ideal though, as I haven't added more tests to cover some scenarios that these changes have introduced (for example, no valid token sent in blogs POST). 
 
+## Exercise 4.20
+
+I have done this inadvertently already, but a modified version - instead of putting the token in `req.token`, I have decoded it in the middleware and put the resulting user info in `req.user`, so I am considering this done.
+
 
 ---
