@@ -172,6 +172,13 @@ I have done this inadvertently already, but a modified version - instead of putt
 
 ## Exercise 4.21
 
-Since I had token validation down to a middleware, all I had to do was to add the `tokenValidator` middleware to the blogs DELETE endpoint. Also, I added a check in the `findOneAndRemove` query in this endpoint - a filter of `userId: req.user.id` (since `req.user` contains the decoded user info from token). This alone would ensure that only the users whose `userId` was in the blogs (who therefore "owned" the blog in the one-to-many relationship) could delete it. 
+Since I had token validation down to a middleware, all I had to do was to add the `tokenValidator` middleware to the blogs DELETE endpoint. Also, I added a check in the `findOneAndRemove` query in this endpoint - a filter of `userId: req.user.id` (since `req.user` contains the decoded user info from token). This alone would ensure that only the users whose `userId` was in the blogs (who therefore "owned" the blog in the one-to-many relationship) could delete it.
+
+
+## Exercise 4.22
+
+I had inadvertently done most of this already. To change the tests for delete, I did some of the more trickery that I did for the POST route wherein I would store the token with the delete parameters itself during the setup for the test in `beforeEach`. And writing the additional test where no token is sent was trivial.
+
+
 
 ---
