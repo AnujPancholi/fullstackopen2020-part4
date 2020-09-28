@@ -164,9 +164,14 @@ Now that it was clear what I had to add the token validation for, I removed the 
 
 Also, although it was not a requirement (I found this out later), the tests that all these changes break have been fixed with some trickery. Test coverage is not ideal though, as I haven't added more tests to cover some scenarios that these changes have introduced (for example, no valid token sent in blogs POST). 
 
+
 ## Exercise 4.20
 
 I have done this inadvertently already, but a modified version - instead of putting the token in `req.token`, I have decoded it in the middleware and put the resulting user info in `req.user`, so I am considering this done.
 
+
+## Exercise 4.21
+
+Since I had token validation down to a middleware, all I had to do was to add the `tokenValidator` middleware to the blogs DELETE endpoint. Also, I added a check in the `findOneAndRemove` query in this endpoint - a filter of `userId: req.user.id` (since `req.user` contains the decoded user info from token). This alone would ensure that only the users whose `userId` was in the blogs (who therefore "owned" the blog in the one-to-many relationship) could delete it. 
 
 ---
