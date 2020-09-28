@@ -13,6 +13,8 @@ const ACCEPTED_AUTH_METHODS = [
   "Bearer"
 ]
 
+
+// middleware to take and decode token, store the result in req.user
 const tokenValidator = (req,res,next) => {
   
   req.user = null;
