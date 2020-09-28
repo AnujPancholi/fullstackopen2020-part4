@@ -149,5 +149,13 @@ This would make for complex queries to fetch data in the GET routes, but the pro
 
 I could've made multiple queries and then joined the data in my code, but decided to use `$lookup` instead, which would be more performant. After inplementing the aggregations in users and blogs GET endopoints, I found that many of the tests were failing - primarily because the identifier property was `id` and the aggregation was returning `_id`. I found some easy way to do this, like a `transform` function for aggregation in mongoose (which I did not find) or any stage in the aggregation pipeline with which you could selectively map only some properties to a different keyname (which I found none), but ultimately I had to go with the obvious approach - `$project` stage in the pipeline. This was cumbersome, but it got the job done.
 
+## Exercise 4.18
+
+The statement of this exercise is a bit confusing - it asks to implement jwt-based validation, which involves making a login endpoint to first generate the token (which is clear) but the next exercise implies that the token validation must work only on certain endpoints, and this exercise isn't clear on which endpoints exactly we have to apply this on. Are we to not allow any user to view any blogs or users if not logged in?
+
+Anyway, for the purpose of this exercise, I have simply made a `tokenValidator` middleware that parses a bearer jwt, if any and stores the user info thus obtained in the request object, in `req.user`.
+
+**NOTE:** The token validation middleware will **not** return an error up until this point, if no jwt/incorrect jwt is supplied, as it's unclear which endpoints we want to protect.
+
 
 ---
